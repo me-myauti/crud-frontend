@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: #dc143c !important;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  align-items: center;
+  height: auto;
+  padding:10px;
+  margin-top:5rem;
+
+}
+
+.form-register {
+  max-width: 300px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius:  0.5rem;
+}
+.form-register-heading,
+.checkbox {
+  margin-bottom: 30px;
+}
+
+.checkbox {
+  font-weight: normal;
+  margin-bottom:1rem;
+}
+
+.form-control {
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+  margin-bottom: 0.5rem;
+  width:100%; 
+}
+
+.checksize{
+  display: flex;
+  justify-content: flex-start;
+  gap: 0 0.5rem; 
+}
+
+.checkbox{
+  display: flex;
+  gap: 0.5rem;
+}
+
+.button {
+  color: #fff;
+  background-color: #dc143c;
+  padding:1rem 2rem 1rem 2rem;
+  border: 1px solid;
+  font-size: 14px;
+  border-radius:0.5rem;
+  cursor: pointer;
+  margin-block:0.5rem;
+  width: 100%;
+}
+
+
+.button:hover {
+  filter: brightness(1.2);
+}
