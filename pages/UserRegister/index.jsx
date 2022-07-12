@@ -6,56 +6,57 @@ import axios from "../../services/axiosConf";
 
 
 export default function UserRegister() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [nome, setNome] = useState('');
+  const [senha, setSenha] = useState('');
   const [cpf, setCpf] = useState('');
-  const [contact, setContact] = useState('');
-
+  const [contato, setContato] = useState('');
   let navigate = useNavigate()
 
   const submitUserRegister = async () => {
     axios.post("/createUser", {
-      "nome": username,
-      "cpf": cpf,
-      "senha": password,
-      "contato": contact,
-      "admin": false
+      nome,
+      cpf,
+      senha,
+      contato,
     }).then((res)=>{
       console.log(res)
       navigate("/")
     }).catch((err)=>{
-      console.log(err);
-      navigate("/")
+      console.log(err.response.data);
+      navigate("/registerUser")
     })
   }
 
 
   return (
-    <div>
+
       <div className="wrapper">
+        <span>{nome}</span>
+        <span>{cpf}</span><span>{contato}</span><span>{senha}</span>
+
         <form className="form-register">
           <h2 className="form-register-heading">Registrar Usuário</h2>
           <input
             type="text"
             className="form-control"
-            name="user"
+            name="nome"
             placeholder="Usuário"
             required
             autoFocus=""
             autoComplete="off"
             maxLength="100"
-            onChange={(e)=>setUsername(e.target.value)}
+            onChange={(e)=>setNome(e.target.value)}
           />
           <input
             type="password"
             className="form-control"
-            name="password"
+            name="senha"
             placeholder="Senha"
             required=""
             id="password"
             autoComplete="off"
             maxLength="256"
-            onChange={(e)=>setPassword(e.target.value)}
+            onChange={(e)=>setSenha(e.target.value)}
           />
           <input
             type="text"
@@ -65,20 +66,20 @@ export default function UserRegister() {
             required=""
             autoFocus=""
             autoComplete="off"
-            maxLength="14"
+            maxLength="11"
             onChange={(e)=>setCpf(e.target.value)}
           />
 
           <input
             type="text"
             className="form-control"
-            name="contact"
+            name="contato"
             placeholder="Contato"
             required=""
             autoFocus=""
             autoComplete="off"
             maxLength="15"
-            onChange={(e)=>setContact(e.target.value)}
+            onChange={(e)=>setContato(e.target.value)}
           />
 
           <label className="checkbox">
@@ -93,10 +94,9 @@ export default function UserRegister() {
           </label>
 
           <button className="button" onClick={submitUserRegister} type="button">
-            Cadastrar
+            Registrar
           </button>
         </form>
       </div>
-    </div>
   );
 }
