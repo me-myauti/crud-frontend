@@ -31,8 +31,7 @@ export default function UserRegister() {
   return (
 
       <div className="wrapper">
-        <span>{nome}</span>
-        <span>{cpf}</span><span>{contato}</span><span>{senha}</span>
+        <span>Teste Myauti</span>
 
         <form className="form-register">
           <h2 className="form-register-heading">Registrar Usuário</h2>
