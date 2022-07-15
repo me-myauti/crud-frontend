@@ -10,9 +10,31 @@ export default function CustomerRegister() {
   const [cliente, setCliente] = useState("");
   const [emailEmpresa, setEmailEmpresa] = useState("");
   const [emailCliente, setEmailCliente] = useState("");
+  const [endereco, setEndereco] = useState("");
   const [senha, setSenha] = useState("");
   const [contato, setContato] = useState("");
+  const [error, setError] = useState("")
   let navigate = useNavigate();
+
+  const submitCustomerRegister = async () => {
+    await axios.post("/createCustomer", {
+      titular: cliente,
+      cnpj,
+      email_hospedagem: emailEmpresa,
+      senha_hospedagem: senha,
+      email_empresa: emailCliente,
+      nome_empresa: empresa,
+      endereco,
+      contato,
+    }).then((res)=>{
+      console.log(res)
+      navigate("/")
+    }).catch((err)=>{
+      console.log(err)
+      setError(err.response.data.err)
+      navigate("/registerCustomer")
+    })
+  };
 
   return (
     <div className="wrapper">
@@ -22,19 +44,30 @@ export default function CustomerRegister() {
           type="text"
           className="form-control"
           name="empresa"
-          placeholder="Empresa"
+          placeholder="Nome da empresa"
           required
           autoFocus=""
           autoComplete="off"
           maxLength="100"
           onChange={(e) => setEmpresa(e.target.value)}
         />
+        <input
+          type="text"
+          className="form-control"
+          name="endereco"
+          placeholder="Endereço da empresa"
+          required
+          autoFocus=""
+          autoComplete="off"
+          maxLength="100"
+          onChange={(e) => setEndereco(e.target.value)}
+        />
 
         <input
           type="text"
           className="form-control"
           name="cliente"
-          placeholder="Cliente"
+          placeholder="Nome do cliente"
           required
           autoFocus=""
           autoComplete="off"
@@ -58,24 +91,12 @@ export default function CustomerRegister() {
           type="text"
           className="form-control"
           name="contato"
-          placeholder="Contato"
+          placeholder="Contato (Telefone)"
           required=""
           autoFocus=""
           autoComplete="off"
           maxLength="100"
           onChange={(e) => setContato(e.target.value)}
-        />
-
-        <input
-          type="text"
-          className="form-control"
-          name="emailEmpresa"
-          placeholder="Email da Empresa"
-          required=""
-          autoFocus=""
-          autoComplete="off"
-          maxLength="15"
-          onChange={(e) => setEmailEmpresa(e.target.value)}
         />
 
         <input
@@ -90,6 +111,17 @@ export default function CustomerRegister() {
           onChange={(e) => setEmailCliente(e.target.value)}
         />
 
+        <input
+          type="text"
+          className="form-control"
+          name="emailEmpresa"
+          placeholder="Email de hospedagem"
+          required=""
+          autoFocus=""
+          autoComplete="off"
+          maxLength="100"
+          onChange={(e) => setEmailEmpresa(e.target.value)}
+        />
 
         <input
           type="password"
@@ -113,8 +145,9 @@ export default function CustomerRegister() {
           />
           Ver senha
         </label>
+        <span className="danger">{error}</span>
 
-        <button className="button" type="button">
+        <button className="button" onClick={submitCustomerRegister} type="button">
           Registrar
         </button>
       </form>

@@ -10,6 +10,7 @@ export default function UserRegister() {
   const [senha, setSenha] = useState('');
   const [cpf, setCpf] = useState('');
   const [contato, setContato] = useState('');
+  const [error, setError] = useState('')
   let navigate = useNavigate()
 
   const submitUserRegister = async () => {
@@ -22,8 +23,7 @@ export default function UserRegister() {
       console.log(res)
       navigate("/")
     }).catch((err)=>{
-      console.log(err.response.data);
-      navigate("/registerUser")
+      setError(err.response.data.err)
     })
   }
 
@@ -64,6 +64,7 @@ export default function UserRegister() {
             autoFocus=""
             autoComplete="off"
             maxLength="11"
+            minLength="11"
             onChange={(e)=>setCpf(e.target.value)}
           />
 
@@ -89,6 +90,7 @@ export default function UserRegister() {
             />
             Ver senha
           </label>
+          <span className="danger">{error}</span>
 
           <button className="button" onClick={submitUserRegister} type="button">
             Registrar

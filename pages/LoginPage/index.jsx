@@ -7,18 +7,16 @@ import pswdToggle from "./togglePswd";
 export default function LoginPage(){
     const [senha, setSenha] = useState('');
     const [cpf, setCpf] = useState('');
-  
+    const [error, setError] = useState('')
     let navigate = useNavigate()
-  
     const handleUserSignIn = async () => {
-      axios.post("/authenticateUser", {
+      await axios.post("/authenticateUser", {
         cpf,
         senha
-      }).then((res)=>{
-        console.log(res)
+      }).then(()=>{
         navigate("/crudHome")
       }).catch((err)=>{
-        console.log(err);
+        setError(err.response.data.err)
         navigate("/")
       })
     }
@@ -35,7 +33,7 @@ export default function LoginPage(){
             required
             autoFocus=""
             autoComplete="off"
-            maxLength="100"
+            maxLength="11"
             onChange={(e)=>setCpf(e.target.value)}
           />
           <input
@@ -60,6 +58,7 @@ export default function LoginPage(){
             />
             Ver senha
           </label>
+          <span className='danger'>{error}</span>
 
           <button className="button" onClick={handleUserSignIn} type="button">
             Entrar
