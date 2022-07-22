@@ -1,50 +1,76 @@
-import "./styles.css";
-import pswdToggle from "./togglePswd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "../../services/axiosConf.js";
+import Times from "../../assets/Times/index.jsx";
 import { useNavigate } from "react-router-dom";
-import axios from "../../services/axiosConf";
+import "./styles.css";
 
-export default function CustomerRegister() {
-  const [empresa, setEmpresa] = useState("");
+export default function EditForm(props) {
+  let navigate = useNavigate()
+  const [userData, setUserData] = useState([])
+  const [id, setId] = useState('')
+  const [update, setUpdate] = useState(false)
+  const [empresa, setEmpresa] = useState('');
   const [cnpj, setCnpj] = useState("");
   const [cliente, setCliente] = useState("");
   const [emailEmpresa, setEmailEmpresa] = useState("");
-  const [emailCliente, setEmailCliente] = useState("");
+  const [emailHosp, setEmailHosp] = useState("");
   const [endereco, setEndereco] = useState("");
-  const [senha, setSenha] = useState("");
   const [contato, setContato] = useState("");
-  const [error, setError] = useState("")
-  let navigate = useNavigate();
+  const [error, setError] = useState("");
 
-  const submitCustomerRegister = async () => {
-    await axios.post("/createCustomer", {
-      titular: cliente,
-      cnpj,
-      email_hospedagem: emailEmpresa,
-      senha_hospedagem: senha,
-      email_empresa: emailCliente,
-      nome_empresa: empresa,
-      endereco,
-      contato,
+  useEffect(()=>{
+    axios.post("/listUniqueCustomer", {
+      id: props.identification
     }).then((res)=>{
-      console.log(res)
-      navigate("/crudHome")
+      setId(res.data.id)
+      setUserData(res.data)
+      setEmpresa(res.data.nome_empresa)
+      setCnpj(res.data.cnpj)
+      setCliente(res.data.titular)
+      setEndereco(res.data.endereco)
+      setEmailEmpresa(res.data.email_empresa)
+      setEmailHosp(res.data.email_hospedagem)
+      setContato(res.data.contato)
+      console.log(res.data)
     }).catch((err)=>{
-      console.log(err)
-      setError(err.response.data.err)
-      navigate("/registerCustomer")
+      console.log(err.response.data)
     })
-  };
+  }, [update])
+
+ 
+  const handleUpdate = () => {
+    axios.post("/updateUser", {
+      id,
+      empresa,
+      endereco,
+      cliente,
+      cnpj,
+      contato,
+      emailEmpresa,
+      emailHosp,
+    }).then(()=>{
+      window.location.reload()
+    }).catch((err)=>{
+      console.log(err.response.data)
+    })
+  }
 
   return (
     <div className="wrapper">
       <form className="form-register">
-        <h2 className="form-register-heading">Registrar Empresa</h2>
+        <div className="form-register-title">
+          <h2>Atualizar Empresa</h2>
+          <i onClick={props.onExit}>
+            <Times />
+          </i>
+        </div>
+        <input type="hidden" value={userData?.id}/>
         <input
           type="text"
           className="form-control"
           name="empresa"
-          placeholder="Nome da empresa"
+          placeholder={userData?.nome_empresa}
+          value={empresa}
           required
           autoFocus=""
           autoComplete="off"
@@ -55,7 +81,8 @@ export default function CustomerRegister() {
           type="text"
           className="form-control"
           name="endereco"
-          placeholder="Endereço"
+          placeholder={userData?.endereco}
+          value={endereco}
           required
           autoFocus=""
           autoComplete="off"
@@ -68,6 +95,7 @@ export default function CustomerRegister() {
           className="form-control"
           name="cliente"
           placeholder="Nome do cliente"
+          value={cliente}
           required
           autoFocus=""
           autoComplete="off"
@@ -80,6 +108,7 @@ export default function CustomerRegister() {
           className="form-control"
           name="cnpj"
           placeholder="CNPJ"
+          value={cnpj}
           required=""
           autoFocus=""
           autoComplete="off"
@@ -92,6 +121,7 @@ export default function CustomerRegister() {
           className="form-control"
           name="contato"
           placeholder="Contato (Telefone)"
+          value={contato}
           required=""
           autoFocus=""
           autoComplete="off"
@@ -104,18 +134,20 @@ export default function CustomerRegister() {
           className="form-control"
           name="emailCliente"
           placeholder="Email do Cliente"
+          value={emailHosp}
           required=""
           autoFocus=""
           autoComplete="off"
           maxLength="100"
-          onChange={(e) => setEmailCliente(e.target.value)}
+          onChange={(e) => setEmailHosp(e.target.value)}
         />
 
         <input
           type="text"
           className="form-control"
-          name="emailEmpresa"
+          name="emailHosp"
           placeholder="Email de hospedagem"
+          value={emailEmpresa}
           required=""
           autoFocus=""
           autoComplete="off"
@@ -123,32 +155,10 @@ export default function CustomerRegister() {
           onChange={(e) => setEmailEmpresa(e.target.value)}
         />
 
-        <input
-          type="password"
-          className="form-control"
-          name="senha"
-          placeholder="Senha"
-          required=""
-          id="password"
-          autoComplete="off"
-          maxLength="256"
-          onChange={(e) => setSenha(e.target.value)}
-        />
-
-        <label className="checkbox">
-          <input
-            type="checkbox"
-            onClick={pswdToggle}
-            value="eyepassword"
-            id="eyepassword"
-            name="eyepassword"
-          />
-          Ver senha
-        </label>
         <span className="danger">{error}</span>
 
-        <button className="button" onClick={submitCustomerRegister} type="button">
-          Registrar
+        <button className="button"  onClick={handleUpdate} type="button">
+          Atualizar
         </button>
       </form>
     </div>

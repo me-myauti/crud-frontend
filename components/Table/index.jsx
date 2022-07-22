@@ -1,12 +1,8 @@
-import { useState } from "react";
-import { useEffect } from "react";
+
 import axios from "../../services/axiosConf";
 import "./styles.css"
 
-export default function Table() {
-  const [customer, setCustomer] = useState([]);
-  const [update, setUpdate] = useState(false);
-
+export default function Table(props) {
   async function handleDelete(id){
     await axios.post("/deleteUser",{
       id
@@ -16,23 +12,6 @@ export default function Table() {
       console.log(err.response)
     })
   }
-
-  useEffect(() => {
-    axios
-      .get("/listCustomers")
-      .then((res) => {
-        if(update == false){
-          setUpdate(true);
-        }else{
-          setUpdate(false);
-        }
-        setCustomer(res.data);
-      })
-      .catch((err) => {
-        setError(err.response.data.err);
-      });
-  }, [update]);
-
   return (
     <div className="table-container">
       <table class="table table-hover ">
@@ -48,7 +27,7 @@ export default function Table() {
             <th scope="col" colspan="2"></th>
           </tr>
         </thead>
-        {customer.map((c) => {
+        {props.data.map((c) => {
           return (
             <tbody>
               <tr>
@@ -60,7 +39,7 @@ export default function Table() {
                 <td>{c.endereco}</td>
                 <td>{c.contato}</td>
                 <td>
-                  <button type="button" class="btn btn-primary">
+                  <button type="button" id={c.id} onClick={props.edit} class="btn btn-primary">
                     Editar
                   </button>
                 </td>

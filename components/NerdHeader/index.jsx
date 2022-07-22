@@ -3,10 +3,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "../../services/axiosConf";
 import "./style.css"
+import { useNavigate } from 'react-router-dom'
 
 export default function NerdHeader(props) {
     const [user, setUser] = useState([])
     const token = Cookies.get('token')
+    let navigate = useNavigate()
 
     useEffect(() => {
         axios.get("/listLoggedUser", {
@@ -37,7 +39,7 @@ export default function NerdHeader(props) {
             </div>
         </div>
         <div className="header-button">
-            <button>{props.btnNome}</button>
+            <button className={props.nameClass} onClick={()=>navigate("/registerCustomer")}>{props.btnNome}</button>
         </div>
     </header>
   );

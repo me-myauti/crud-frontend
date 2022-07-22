@@ -28,7 +28,10 @@ input[type=number] {
 }
 
 .form-register {
-  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  max-width: 900px;
+  width: 100%;
   padding: 15px 35px 45px;
   margin: 0 auto;
   background-color: #fff;
@@ -39,6 +42,17 @@ input[type=number] {
 .form-register-heading,
 .checkbox {
   margin-bottom: 30px;
+}
+
+.form-register-title{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem;
+}
+
+.form-register-title i {
+  cursor: pointer;
 }
 
 .checkbox {
